@@ -2,7 +2,20 @@ import React from 'react'
 import styles from './styles.module.css'
 import Link from 'next/link'
 import Image from 'next/image'
+import axios from 'axios'
 const MoviesSection = ({title,movies}) => {
+
+
+  const getData=async()=>{
+    try {
+      const response=await axios.get('https://jsonplaceholder.typicode.com/users')
+      console.log(response.data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  getData()
   return (
     <div className={styles.moviesSection}>
         <h3 className={styles.title}>{title}</h3>

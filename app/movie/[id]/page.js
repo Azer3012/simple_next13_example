@@ -1,20 +1,24 @@
-import React from 'react'
-import MovieContainer from '@/containers/movie'
-import Movies from '@/mocks/movies.json'
-import {notFound} from 'next/navigation'
+import React from "react";
+import MovieContainer from "@/containers/movie";
+import Movies from "@/mocks/movies.json";
+import { notFound } from "next/navigation";
 
+import { fetchMovieApi } from "@/services/movie";
 
-const MoviePage = ({params,searchParams}) => {
-    const movieDetail=Movies?.results?.find(movie=>movie?.id.toString()===params?.id)
-    if(!movieDetail){
-        notFound()
-    }
-    if(searchParams.error==="true"){
-        throw new Error("Error Happened")
-    }
-  return (
-   <MovieContainer movie={movieDetail}/>
-  )
-}
+const getMovie = async (movieId) => {
+  return fetchMovieApi(`/movie/${movieId}`);
+};
 
-export default MoviePage
+const MoviePage = async ({ params, searchParams }) => {
+  const movieDetail = await getMovie(params.id);
+
+  if (!movieDetail) {
+    notFound();
+  }
+  if (searchParams.error === "true") {
+    throw new Error("Error Happened");
+  }
+  return <MovieContainer movie={movieDetail} />;
+};
+
+export default MoviePage;
